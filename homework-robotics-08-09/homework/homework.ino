@@ -66,10 +66,25 @@ void loop() {
       print_serie_in_lcd( serie, n, option );
       break;
     case 7:
+      print_alert( "Ingrese la cantidad: " );
+      n = get_number();
+      serie_7( serie, n );
+      print_array_in_serial( serie, n );
+      print_serie_in_lcd( serie, n, option );
       break;
     case 8:
+      print_alert( "Ingrese la cantidad: " );
+      n = get_number();
+      serie_8( serie, n );
+      print_array_in_serial( serie, n );
+      print_serie_in_lcd( serie, n, option );
       break;
     case 9:
+      print_alert( "Ingrese la cantidad: " );
+      n = get_number();
+      serie_9( serie, n );
+      print_array_in_serial( serie, n );
+      print_serie_in_lcd( serie, n, option );
       break;
     default:
       break;
@@ -210,10 +225,6 @@ void serie_5 ( int * serie, int quantity, int j ) {
 
 void serie_6 ( int * serie, int quantity ) {
   int i = 0;
-// 1,2,3,4,5,6,7,7,6,5,4,3,2,1,…….N
-// Ejemplo 
-// Si N=91,2,3,4,54,3,2,1
-// Si N=101,2,3,4,5,5,4,3,2,1
   int middle = quantity / 2;
   middle = quantity % 2 == 0 ? middle : middle + 1;
   bool is_even = quantity % 2 == 0;
@@ -238,6 +249,70 @@ void serie_6 ( int * serie, int quantity ) {
   }
 }
 
+void serie_7 ( int * serie, int quantity ) {
+  int i = 0;
+  int counter = 1;
+  while ( i < quantity ) {
+    serie[ i ] = counter;
+    if ( counter % 3 == 0 )
+      serie[ i ] *= counter;
+    i++;
+    counter++;
+  }
+}
+
+void serie_8 ( int * serie, int quantity ) {
+  int counter = 2;
+  serie[ 0 ] = 0;
+  if ( quantity == 1 )
+    return;
+  serie[ 1 ] = 1;
+  if ( quantity == 2 )
+    return;
+  serie[ 2 ] = 1;
+  if ( quantity == 3 )
+    return;
+
+  int middle = quantity / 2;
+  int fibonacci[ middle ];
+  fibonacci[ 0 ] = 0;
+  fibonacci[ 1 ] = 1;
+
+  for ( int i = 2; i < middle; i++ ) {
+    fibonacci[ i ] = fibonacci[ i - 1 ] + fibonacci[ i - 2 ];
+  }
+
+  int j = 2;
+  for ( int i = 3; i < quantity; i++ ) {
+    if ( i % 2 == 0 ) {
+      serie[ i ] = fibonacci[ j ];
+      j++;
+    }
+    else {
+      serie[ i ] = counter;
+      counter++;
+    }
+  }
+}
+
+void serie_9 ( int * serie, int quantity ) {
+  int i = 0;
+  int fibonacci[ quantity ];
+  fibonacci[ 0 ] = 0;
+  if ( quantity == 1 )
+    return;
+  fibonacci[ 1 ] = 1;
+  if ( quantity == 2 )
+    return;
+  for ( int i = 2; i < quantity; i++ ) {
+    fibonacci[ i ] = fibonacci[ i - 1 ] + fibonacci[ i - 2 ];
+  }
+  for ( int i = 0; i < quantity; i++ ) {
+    serie[ i ] = fibonacci[ i ];
+    if ( i % 3 == 0 )
+      serie[ i ] *= serie[ i ];
+  }
+}
 
 void print_serie_in_lcd ( int * serie, int size, int number_serie ) {
   char message[ 32 ] = "";
